@@ -12,6 +12,7 @@ namespace MatchingGame
 {
     public partial class Form1 : Form
     {
+     
         //参照変数
         //1つ目にクリックされたコントロール
         //プレーヤがまだラベルをクリックしないときはnull
@@ -38,7 +39,9 @@ namespace MatchingGame
         int timePassing;
 
         
-
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         public Form1()
         {
             InitializeComponent();
@@ -47,8 +50,10 @@ namespace MatchingGame
             
             timer2.Start();
         }
-        //各ラベルにリストの中のアイコンをランダムに割り当てる
-
+        
+        /// <summary>
+        /// 各ラベルにリストの中のアイコンをランダムに割り当てる
+        /// </summary>
         private void AssignIconsToSquares()
         {
             //tableLayoutPanelは16個のラベルを持つ
@@ -72,7 +77,37 @@ namespace MatchingGame
             }
         }
 
-        //このイベントハンドラは全てのラベルがクリックされるというイベントで動く
+        /// <summary>
+        /// プレーヤが勝利したか確認するメソッド
+        /// </summary>
+        private void CheckForWinner()
+        {
+            //全てのアイコンが一致しているか確認する
+            foreach (Control control in tableLayoutPanel1.Controls)
+            {
+                Label iconLabel = control as Label;
+
+                if (iconLabel != null)
+                {
+                    //アイコンが背景と同じ色（隠れ）だったら実行停止
+                    if (iconLabel.ForeColor == iconLabel.BackColor)
+
+                        return;
+
+                }
+            }
+            MessageBox.Show("おめでとう！！ぜんぶそろったね！");
+            timer2.Stop();
+            MessageBox.Show(timePassing + "seconds");
+            Close();
+        }
+
+
+        /// <summary>
+        /// ラベルクリックイベント
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void label_Click(object sender, EventArgs e)
         {
             //ハンドラメソッドはどのラベルがクリックされたか知る必要がある
@@ -136,7 +171,11 @@ namespace MatchingGame
 
             }
         }
-
+        /// <summary>
+        /// タイマー(選択時間用)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timer1_Tick(object sender, EventArgs e)
         {
             //タイマーをストップさせる
@@ -153,30 +192,13 @@ namespace MatchingGame
             secondClicked = null;        
         }
 
-        //プレーヤが勝利したか確認するメソッド
-     
-        private void CheckForWinner()
-        {
-            //全てのアイコンが一致しているか確認する
-            foreach (Control control in tableLayoutPanel1.Controls)
-            {
-                Label iconLabel = control as Label;
 
-                if (iconLabel != null)
-                {
-                    //アイコンが背景と同じ色（隠れ）だったら実行停止
-                    if (iconLabel.ForeColor == iconLabel.BackColor)
-                    
-                        return;
-                    
-                }
-            }
-            MessageBox.Show("おめでとう！！ぜんぶそろったね！");
-            timer2.Stop();
-            MessageBox.Show(timePassing + "seconds");
-            Close();
-        }
 
+        /// <summary>
+        /// タイマー(クリア時間用)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timer2_Tick(object sender, EventArgs e)
         {
             timePassing = timePassing + 1;
